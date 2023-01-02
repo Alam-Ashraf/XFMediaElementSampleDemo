@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="XFMediaElementSampleDemo.Views.VideoListView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:XFMediaElementSampleDemo.Converters"
+    xmlns:customMedia="clr-namespace:XFMediaElementSampleDemo.Views"
+    x:Name="videoView"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BoolToColorConverter x:Key="BoolToColor" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+
+            <BoxView
+                BackgroundColor="#559173"
+                HeightRequest="50"
+                IsVisible="{OnPlatform Android=False,
+                                       iOS=True}" />
+
+            <Grid
+                Padding="10"
+                BackgroundColor="#559173"
+                ColumnDefinitions="*,*,*"
+                HeightRequest="60"
+                HorizontalOptions="FillAndExpand">
+
+                <Image
+                    Grid.Column="0"
+                    HeightRequest="25"
+                    HorizontalOptions="Start"
+                    Source="left_arrow.png"
+                    WidthRequest="25">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnBackCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Label
+                    Grid.Column="1"
+                    FontSize="Medium"
+                    HorizontalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Center"
+                    Text="Video List"
+                    TextColor="White"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+
+                <Image
+                    Grid.Column="2"
+                    HeightRequest="35"
+                    HorizontalOptions="End"
+                    Source="camera.png"
+                    WidthRequest="35">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnCaptureScreenCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+            </Grid>
+
+            <Grid RowDefinitions="*,Auto">
+
+                <!--  Top Selected Video List  -->
+                <CollectionView
+                    x:Name="ls"
+                    Grid.Row="0"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsSource="{Binding SelectedVideoList}"
+                    SelectionMode="None"
+                    VerticalOptions="FillAndExpand">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            HorizontalItemSpacing="5"
+                            Orientation="Vertical"
+                            Span="2"
+                            VerticalItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+
+                    <!--  Empty View  -->
+                    <CollectionView.EmptyView>
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Label
+                                HorizontalOptions="CenterAndExpand"
+                                HorizontalTextAlignment="Center"
+                                Text="No Video Found"
+                                TextColor="Black"
+                                VerticalOptions="CenterAndExpand"
+                                VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+
+                    <!--  Item Template  -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                Margin="5"
+                                HeightRequest="230"
+                                IsClippedToBounds="False"
+                                VerticalOptions="Start">
+
+                                <Label Text="{Binding Title}" TextColor="Black" />
+
+                                <customMedia:CustomMediaElement IsStopMedia="{Binding IsStopMedia}" MediaUrl="{Binding VideoURL}" />
+
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--  Bottom Horizontal Video List  -->
+                <StackLayout Grid.Row="1" HeightRequest="170">
+
+                    <Label Margin="0,10,0,0" Text="Select video for multiview layer" />
+
+                    <StackLayout BackgroundColor="Black">
+
+                        <CollectionView
+                            Margin="5"
+                            ItemSizingStrategy="MeasureFirstItem"
+                            ItemsSource="{Binding VideoList}"
+                            SelectionMode="None"
+                            VerticalOptions="CenterAndExpand">
+
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+
+                            <!--  Item Template  -->
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                        <Frame
+                                            Margin="5"
+                                            Padding="2"
+                                            BorderColor="{Binding IsSelected, Converter={StaticResource BoolToColor}}"
+                                            CornerRadius="0"
+                                            HeightRequest="110"
+                                            IsClippedToBounds="True"
+                                            WidthRequest="110">
+
+                                            <Grid>
+                                                <Image Source="play.png" />
+
+                                                <Frame
+                                                    Margin="5"
+                                                    Padding="3"
+                                                    BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColor}}"
+                                                    CornerRadius="6"
+                                                    HeightRequest="5"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    VerticalOptions="EndAndExpand"
+                                                    WidthRequest="5" />
+                                            </Grid>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.OnVideoSelectedCommand, Source={x:Reference videoView}}" CommandParameter="{Binding .}" />
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+
+                                        <Label
+                                            FontSize="Medium"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{Binding Title}"
+                                            TextColor="White" />
+
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </StackLayout>
+
+                </StackLayout>
+
+            </Grid>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XFMediaElementSampleDemo.Views.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="False">
+
+    <StackLayout VerticalOptions="CenterAndExpand">
+
+        <Button
+            BackgroundColor="#559173"
+            Command="{Binding OnVideoListCommand}"
+            Text="Video List"
+            TextColor="White" />
+
+        <Button
+            BackgroundColor="#559173"
+            Command="{Binding OnScreenshotsCommand}"
+            Text="Screenshots List"
+            TextColor="White" />
+
+    </StackLayout>
+
+</ContentPage>
